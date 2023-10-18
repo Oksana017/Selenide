@@ -1,6 +1,7 @@
 package ru.netology;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
@@ -8,8 +9,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.*;
+
 
 public class SelenideTest {
 
@@ -20,7 +22,7 @@ public class SelenideTest {
     @Test
     public void testWhenAllValidValues() {
         open("http://localhost:9999");
-        $("[data-test-id='city'] input").setValue("Киров");
+        $("[data-test-id=city] input").setValue("Киров");
         String currentDate = generateDate(4, "dd.MM.yyyy");
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
         $("[data-test-id=date] input").setValue(currentDate);
@@ -30,6 +32,6 @@ public class SelenideTest {
         $("button.button").click();
         $(".notification__content")
                 .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Встреча успешно забронирована на " + currentDate));
+                .shouldBe(Condition.exactText("Встреча успешно забронирована на " + currentDate));
     }
 }
